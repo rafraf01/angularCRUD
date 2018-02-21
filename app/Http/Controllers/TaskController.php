@@ -16,7 +16,16 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ValidateRequest;
 
 class TaskController {
+    /**
+     * @param Task $task
+     */
+    public function __construct(Task $task){
+        $this->task = $task;
+    }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index(){
 
         $items = Task::paginate(5);
@@ -26,22 +35,31 @@ class TaskController {
         ], 200);
     }
 
+    /**
+     * @param ValidateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(ValidateRequest $request){
         $task = new Task();
 
         $task->fill($request->all());
         $task->created_by = Auth::user()->id;
         $task->save();
+//        $this->task->create($request->all());
 
         return response()->json([
-            'task' => $task,
             'message' => 'Success'
         ],200);
     }
 
+    /**
+     * @param ValidateRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(ValidateRequest $request, $id){
 
-      $tasks = Task::find($id);
+      $tasks = $this->task->find($id);
       $tasks->fill($request->all());
       $tasks->save();
 
@@ -51,6 +69,10 @@ class TaskController {
       ]);
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete($id){
 
         $tasks = Task::find($id);

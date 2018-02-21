@@ -12,10 +12,16 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ValidateRequest extends FormRequest  {
 
+    /**
+     * @return bool
+     */
     public function authorize(){
         return true;
     }
 
+    /**
+     * @return array
+     */
     public function rules(){
         return  [
             'task_name' => 'required|max:255',

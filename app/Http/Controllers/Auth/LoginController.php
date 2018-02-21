@@ -40,6 +40,9 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    /**
+     * @return string
+     */
     public function redirectPath(){
 
         switch(Auth::user()->account_type){
