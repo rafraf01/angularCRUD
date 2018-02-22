@@ -12,6 +12,10 @@ app.controller('AdminController', ['$scope', '$element', '$http', 'dataFactory',
         editor: false
     };
 
+    $scope.pagination = {
+        current: 1
+    };
+
     $scope.task = {
         task_name: '',
         description: ''
@@ -37,10 +41,6 @@ app.controller('AdminController', ['$scope', '$element', '$http', 'dataFactory',
     $scope.close = function(){
         $scope.form.display = false;
         $scope.task = {};
-    };
-
-    $scope.pagination = {
-        current: 1
     };
 
     // Get new list next page
@@ -100,6 +100,7 @@ app.controller('AdminController', ['$scope', '$element', '$http', 'dataFactory',
                 $scope.tasks.splice(index, 1);
                 getResultsPage($scope.currPage);
             },function error(error){
+
                 $scope.recordErrors(error)
             })
         }

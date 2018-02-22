@@ -40,12 +40,8 @@ class TaskController {
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(ValidateRequest $request){
-        $task = new Task();
 
-        $task->fill($request->all());
-        $task->created_by = Auth::user()->id;
-        $task->save();
-//        $this->task->create($request->all());
+        $this->task->create(array_merge($request->all(),['created_by' => Auth::user()->id]));
 
         return response()->json([
             'message' => 'Success'
@@ -59,14 +55,16 @@ class TaskController {
      */
     public function update(ValidateRequest $request, $id){
 
-      $tasks = $this->task->find($id);
-      $tasks->fill($request->all());
-      $tasks->save();
+      if (!$tasks = null){
+          $tasks = $this->task->find($id);
+          $tasks->fill($request->all());
+          $tasks->save();
 
-      return response()->json([
-          'data' => $tasks,
-          'message' => 'Updated'
-      ]);
+          return response()->json([
+              'data' => $tasks,
+              'message' => 'Updated'
+          ]);
+      }
     }
 
     /**
